@@ -13,3 +13,13 @@
     - un user, le compte utilisateru lié;
 \*----------------------------------------*/
 
+class Account
+{
+    /*\
+     | Attributs
+    \*/
+
+    private $initialBalance;    //int
+    private $actualBalance;     //int
+    private $userId;            //int
+}
