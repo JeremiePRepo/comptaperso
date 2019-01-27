@@ -8,35 +8,61 @@
     utiliser la méthode de classe 
     connexion pour instancier un 
     unique objet DataBase
+
+    Pour faire une requête : 
+    $resultat = 
+    DataBase::connect()->request();
+
+    Pour instancier un objet, puis faire 
+    une requête :
+    $objetBDD = DataBase::connect();
+    $resultat = $objetBDD->request();
 \*----------------------------------------*/
 
-
 /*\
+ | -------------------------------------
  | Global Constants Includes
+ | -------------------------------------
 \*/
 
-include_once '../inc/params.inc.php';
-
+include_once './inc/params.inc.php';
 
 class DataBase
 {
 
     /*\
+     | -------------------------------------
      | Attributs
+     | -------------------------------------
     \*/
 
-    const DB_ADDRESSE = 'mysql:host=localhost;dbname=comptaperso.local;charset=UTF8';
-    
     private static $dataBaseInstance = null;    // Object DataBase
     private $connection;                        // Object PDO
-    private $requete = 'SELECT * FROM user';    // String
-
 
     /*\
+     | -------------------------------------
      | Méthodes
+     | -------------------------------------
     \*/
 
-    public static function connection() : DataBase
+    private function __construct()  // En private car singleton
+    {
+        try 
+        {
+            $this->connection = new PDO(DB_TYPE     . 
+                                        ':host='    . DB_HOST . 
+                                        ';dbname='  . DB_NAME . 
+                                        ';charset=' . DB_CHAR, 
+                                        DB_USER, 
+                                        DB_PASS);
+        }
+        catch (PDOException $error)
+        {
+            echo DB_ERROR_MESSAGE . $error;
+        }
+    }
+
+    public static function connect() : DataBase
     {
         if(!self::$dataBaseInstance)                // Si Il n'existe pas déjà de connexion
         {
@@ -45,37 +71,25 @@ class DataBase
         return self::$dataBaseInstance; 
     }
 
-    private function __construct()
+    public function request() : array
     {
-        try 
-        {
-            $this->connection = new PDO(self::DB_ADDRESSE, 'root', 'cool1705');
-            echo 'Je suis connecté à la BDD<br>';
-        }
-        catch (PDOException $uneErreur)
-        {
-            echo 'Erreur de connexion : ' . $uneErreur;
-        }
-    }
-
-    public function faireUneRequetePrepare()
-    {
-        $this->SQLPrepare = $this->connection->prepare($this->requete);
+        $this->SQLPrepare = $this->connection->prepare('SELECT * FROM user');
         if($this->SQLPrepare)
         {
             if($this->SQLPrepare->execute())
             {
-                $this->result = $this->SQLPrepare->fetchAll();
-                return $this->result;
+                return $this->SQLPrepare->fetchAll();
             }
             else
             {
                 // Erreur d'execution
+                // TODO : renvoyer une erreur sous forme d'array
             }
         }
         else
         {
             // Erreur de préparation
+            // TODO : renvoyer une erreur sous forme d'array
         }
     }
 }

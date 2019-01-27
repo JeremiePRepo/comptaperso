@@ -1,17 +1,6 @@
 <?php
 
-require_once 'classes/DataBase.class.php';
+require_once 'classes/_Autoload.class.php';
+Autoload::loadClasses();
 
-$objetBDD = DataBase::connection();
-
-
-
-
-$resultat = $objetBDD->faireUneRequetePrepare();
-
-foreach ($resultat as $value)
-{
-    echo '<pre>';
-    var_dump($value);
-    echo '</pre>';
-}
+WebPage::display();

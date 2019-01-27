@@ -12,8 +12,11 @@
 
 class UserAccount
 {
+    
     /*\
+     | -------------------------------------
      | Attributs
+     | -------------------------------------
     \*/
 
     private $username;      // string

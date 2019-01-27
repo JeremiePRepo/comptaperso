@@ -22,3 +22,5 @@
     - Des tags
 \*----------------------------------------*/
 
+// TODO : Repenser la classe : problème entre la date du mouvement et lé récurre.
+// Solution : Créer une classe Récurrence des mouvemlents ?
