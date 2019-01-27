@@ -11,6 +11,7 @@
     centimes, qui est la somme de tous ses 
     mouvements;
     - un user, le compte utilisateru lié;
+    - Nom (ex: "Compte principal", "Livret")
 \*----------------------------------------*/
 
 class Account
