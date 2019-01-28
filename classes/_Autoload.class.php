@@ -40,7 +40,7 @@ class Autoload
     private function __construct()                      // En private car singleton
     {
         $this->fileNames = scandir(dirname(__FILE__));  // On scan les noms des fichiers dans le dossier courrant
-        
+
         foreach ($this->fileNames as $this->filename)   // On parcours les noms de fichiers
         {
             if (filter_var($this->filename,
@@ -52,7 +52,7 @@ class Autoload
         }
     }
 
-    public static function loadClasses(): Autoload
+    public static function loadClasses() : Autoload
     {
         if (!self::$autoloadInstance)               // Si Il n'existe pas déjà de connexion
         {

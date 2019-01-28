@@ -58,9 +58,11 @@ class DataBase
         }
         catch (PDOException $error)
         {
-            echo DB_ERROR_MESSAGE . $error;
+            echo DB_CONNECTION_ERROR_MESSAGE . $error;
         }
     }
+
+    /*-------------------------------------*/
 
     public static function connect() : DataBase
     {
@@ -70,6 +72,8 @@ class DataBase
         }
         return self::$dataBaseInstance; 
     }
+
+    /*-------------------------------------*/
 
     public function request() : array
     {
@@ -82,14 +86,34 @@ class DataBase
             }
             else
             {
-                // Erreur d'execution
-                // TODO : renvoyer une erreur sous forme d'array
+                return DB_EXECUTION_ERROR_MESSAGE;
             }
         }
         else
         {
-            // Erreur de préparation
-            // TODO : renvoyer une erreur sous forme d'array
+            return DB_PREPARATION_ERROR_MESSAGE;
+        }
+    }
+
+    /*-------------------------------------*/
+
+    public function fetchUserByEmail($email, $password) //: UserAccount
+    {
+        $this->DBResponse = $this->connection->prepare('SELECT `id`, `user_name` FROM `user` WHERE `email` LIKE :email AND `password` = :password');
+        if($this->DBResponse)
+        {
+            if($this->DBResponse->execute(array(':email' => $email, ':password' => $password)))
+            {
+                return $this->DBResponse->fetchAll();
+            }
+            else
+            {
+                return  DB_EXECUTION_ERROR_MESSAGE;
+            }
+        }
+        else
+        {
+            return DB_PREPARATION_ERROR_MESSAGE;
         }
     }
 }
